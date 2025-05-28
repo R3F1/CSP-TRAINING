@@ -2,52 +2,139 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Numer Seryjny + Kamera</title>
+  <title>LCM-FI - Foto i Status</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-    #video { width: 300px; height: auto; border: 2px solid #000; margin-top: 10px; }
-    #photo { margin-top: 10px; width: 300px; border: 2px solid #000; }
-    .field { margin: 10px; }
-    input[type="text"] { padding: 5px; font-size: 16px; width: 200px; }
-    button { padding: 8px 16px; font-size: 16px; cursor: pointer; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #f0f4f8, #d6e4f0);
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .logo {
+      font-size: 36px;
+      font-weight: bold;
+      animation: pulse 3s infinite;
+      margin-bottom: 20px;
+      color: #2b60de;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .container {
+      background: #fff;
+      padding: 20px;
+      margin: auto;
+      max-width: 500px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      width: 70%;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    video, img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
+
+    .buttons {
+      margin: 10px 0;
+    }
+
+    button {
+      padding: 10px 16px;
+      margin: 5px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .ok { background: #4CAF50; color: white; }
+    .ng { background: #f44336; color: white; }
+    .capture { background: #2b60de; color: white; }
+
+    .status-info {
+      margin-top: 15px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <h1>📷 Skan Numeru Seryjnego</h1>
-  <div class="field">
+  <div class="logo">📸 LCM-FI</div>
+  <div class="container">
     <input type="text" id="serialInput" placeholder="Wpisz numer seryjny">
-    <button onclick="takePhoto()">📸 Zrób zdjęcie</button>
+    
+    <div class="buttons">
+      <button class="ok" onclick="setStatus('OK')">✅ OK</button>
+      <button class="ng" onclick="setStatus('NG')">❌ NG</button>
+      <button class="capture" onclick="takePhoto()">📷 Zrób zdjęcie</button>
+    </div>
+
+    <video id="video" autoplay playsinline></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <img id="photo" alt="Podgląd zdjęcia">
+
+    <div class="status-info" id="resultText"></div>
   </div>
-  <video id="video" autoplay></video>
-  <canvas id="canvas" style="display:none;"></canvas>
-  <img id="photo" alt="Zrobione zdjęcie">
-  <div id="result"></div>
 
   <script>
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
     const photo = document.getElementById('photo');
-    const result = document.getElementById('result');
+    const resultText = document.getElementById('resultText');
+    let currentStatus = "";
 
-    // Uruchom kamerę
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(stream => video.srcObject = stream)
       .catch(err => alert("Nie można uzyskać dostępu do kamery: " + err));
 
+    function setStatus(status) {
+      currentStatus = status;
+      resultText.textContent = `Status: ${status}`;
+      resultText.style.color = (status === 'OK') ? '#4CAF50' : '#f44336';
+    }
+
     function takePhoto() {
       const serial = document.getElementById('serialInput').value.trim();
       if (!serial) {
-        alert("Wprowadź numer seryjny przed zrobieniem zdjęcia.");
+        alert("Wprowadź numer seryjny.");
         return;
       }
+      if (!currentStatus) {
+        alert("Wybierz status: OK lub NG.");
+        return;
+      }
+
       const context = canvas.getContext('2d');
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       context.drawImage(video, 0, 0);
       const imageData = canvas.toDataURL('image/png');
       photo.src = imageData;
-      result.innerHTML = `<p>📄 Powiązano numer: <strong>${serial}</strong></p>`;
-      // Tu możesz np. przesłać dane do serwera: serial + imageData
+
+      resultText.innerHTML = `📄 Nr seryjny: <strong>${serial}</strong><br>Status: <strong>${currentStatus}</strong>`;
+      // Możesz tutaj dodać funkcję wysyłki danych do serwera lub zapisania do pliku
     }
   </script>
 </body>

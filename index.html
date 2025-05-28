@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -84,7 +85,7 @@
   <div class="logo">📸 LCM-FI</div>
   <div class="container">
     <input type="text" id="serialInput" placeholder="Wpisz numer seryjny">
-    
+
     <div class="buttons">
       <button class="ok" onclick="setStatus('OK')">✅ OK</button>
       <button class="ng" onclick="setStatus('NG')">❌ NG</button>
@@ -131,10 +132,27 @@
       canvas.height = video.videoHeight;
       context.drawImage(video, 0, 0);
       const imageData = canvas.toDataURL('image/png');
-      photo.src = imageData;
 
+      photo.src = imageData;
       resultText.innerHTML = `📄 Nr seryjny: <strong>${serial}</strong><br>Status: <strong>${currentStatus}</strong>`;
-      // Możesz tutaj dodać funkcję wysyłki danych do serwera lub zapisania do pliku
+
+      fetch('https://script.google.com/macros/s/AKfycby-2LevmY0VNPGST9IR67WN_kiUuokk69SlSH4VXVSGfCkPk3kpIw4WLojl0RhGtqgG/exec', {
+        method: 'POST',
+        body: JSON.stringify({
+          serial: serial,
+          status: currentStatus,
+          image: imageData
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => {
+        if (res.ok) {
+          alert("✅ Zapisano do arkusza!");
+        } else {
+          alert("❌ Błąd podczas zapisu.");
+        }
+      });
     }
   </script>
 </body>

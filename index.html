@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Numer Seryjny + Kamera</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+    #video { width: 300px; height: auto; border: 2px solid #000; margin-top: 10px; }
+    #photo { margin-top: 10px; width: 300px; border: 2px solid #000; }
+    .field { margin: 10px; }
+    input[type="text"] { padding: 5px; font-size: 16px; width: 200px; }
+    button { padding: 8px 16px; font-size: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>📷 Skan Numeru Seryjnego</h1>
+  <div class="field">
+    <input type="text" id="serialInput" placeholder="Wpisz numer seryjny">
+    <button onclick="takePhoto()">📸 Zrób zdjęcie</button>
+  </div>
+  <video id="video" autoplay></video>
+  <canvas id="canvas" style="display:none;"></canvas>
+  <img id="photo" alt="Zrobione zdjęcie">
+  <div id="result"></div>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const photo = document.getElementById('photo');
+    const result = document.getElementById('result');
+
+    // Uruchom kamerę
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => video.srcObject = stream)
+      .catch(err => alert("Nie można uzyskać dostępu do kamery: " + err));
+
+    function takePhoto() {
+      const serial = document.getElementById('serialInput').value.trim();
+      if (!serial) {
+        alert("Wprowadź numer seryjny przed zrobieniem zdjęcia.");
+        return;
+      }
+      const context = canvas.getContext('2d');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      context.drawImage(video, 0, 0);
+      const imageData = canvas.toDataURL('image/png');
+      photo.src = imageData;
+      result.innerHTML = `<p>📄 Powiązano numer: <strong>${serial}</strong></p>`;
+      // Tu możesz np. przesłać dane do serwera: serial + imageData
+    }
+  </script>
+</body>
+</html>

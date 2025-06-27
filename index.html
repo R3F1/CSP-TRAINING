@@ -1,156 +1,77 @@
-
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>LCM-FI - Auto Upload</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LCD Defect Visualizer</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #f0f4f8, #d6e4f0);
-      color: #333;
+      background-color: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
       text-align: center;
       padding: 20px;
     }
-
-    .logo {
-      font-size: 36px;
-      font-weight: bold;
-      animation: pulse 3s infinite;
-      margin-bottom: 20px;
-      color: #2b60de;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.1); opacity: 0.8; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    .container {
-      background: #fff;
-      padding: 20px;
-      margin: auto;
-      max-width: 500px;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-
-    input[type="text"] {
-      padding: 10px;
-      width: 70%;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-
-    video, img {
-      width: 100%;
-      max-width: 400px;
+    .tv {
+      position: relative;
+      margin: 0 auto;
+      width: 800px;
+      height: 450px;
+      background: #222;
+      border: 20px solid #000;
       border-radius: 12px;
-      margin-top: 10px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.7);
     }
-
-    .buttons {
-      margin: 10px 0;
+    .screen-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: opacity 0.3s ease;
     }
-
-    button {
-      padding: 10px 16px;
+    .controls {
+      margin-top: 20px;
+    }
+    .controls button {
       margin: 5px;
+      padding: 10px 20px;
       font-size: 16px;
-      border: none;
-      border-radius: 8px;
       cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    button:hover {
-      transform: scale(1.05);
-    }
-
-    .ok { background: #4CAF50; color: white; }
-    .ng { background: #f44336; color: white; }
-
-    .status-info {
-      margin-top: 15px;
-      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="logo">📸 LCM-FI</div>
-  <div class="container">
-    <input type="text" id="serialInput" placeholder="Wpisz numer seryjny">
-
-    <div class="buttons">
-      <button class="ok" onclick="setStatus('OK')">✅ OK</button>
-      <button class="ng" onclick="setStatus('NG')">❌ NG</button>
-    </div>
-
-    <video id="video" autoplay playsinline></video>
-    <canvas id="canvas" style="display:none;"></canvas>
-    <img id="photo" alt="Podgląd zdjęcia">
-
-    <div class="status-info" id="resultText"></div>
+  <h1>LCD Defect Visualizer</h1>
+  <div class="tv" onclick="highlightDefect()">
+    <div id="overlay" class="screen-overlay"></div>
+  </div>
+  <div class="controls">
+    <button onclick="showDefect('side')">Side MURA</button>
+    <button onclick="showDefect('corner')">Corner MURA</button>
+    <button onclick="showDefect('none')">Clear</button>
   </div>
 
   <script>
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const photo = document.getElementById('photo');
-    const resultText = document.getElementById('resultText');
-    let currentStatus = "";
+    const overlay = document.getElementById('overlay');
 
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => video.srcObject = stream)
-      .catch(err => alert("Nie można uzyskać dostępu do kamery: " + err));
-
-    function setStatus(status) {
-      currentStatus = status;
-      resultText.textContent = `Status: ${status}`;
-      resultText.style.color = (status === 'OK') ? '#4CAF50' : '#f44336';
-
-      // Automatyczne zrobienie zdjęcia po wybraniu statusu
-      autoCaptureAndUpload();
+    function showDefect(type) {
+      if (type === 'side') {
+        overlay.style.backgroundImage = "url('A_digital_photograph_features_a_flat-screen_televi.png')";
+        overlay.style.opacity = 1;
+      } else if (type === 'corner') {
+        overlay.style.backgroundImage = "url('A_digital_photograph_captures_a_flat-screen_televi.png')";
+        overlay.style.opacity = 1;
+      } else {
+        overlay.style.opacity = 0;
+      }
     }
 
-    function autoCaptureAndUpload() {
-      const serial = document.getElementById('serialInput').value.trim();
-      if (!serial) {
-        alert("Wprowadź numer seryjny przed wyborem statusu.");
-        return;
-      }
-
-      const context = canvas.getContext('2d');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      context.drawImage(video, 0, 0);
-      const imageData = canvas.toDataURL('image/png');
-
-      photo.src = imageData;
-      resultText.innerHTML = `📄 Nr seryjny: <strong>${serial}</strong><br>Status: <strong>${currentStatus}</strong>`;
-
-      // Automatyczny zapis
-      fetch('https://script.google.com/macros/s/AKfycby-2LevmY0VNPGST9IR67WN_kiUuokk69SlSH4VXVSGfCkPk3kpIw4WLojl0RhGtqgG/exec', {
-        method: 'POST',
-        body: JSON.stringify({
-          serial: serial,
-          status: currentStatus,
-          image: imageData
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(res => {
-        if (res.ok) {
-          alert("✅ Automatycznie zapisano do arkusza!");
-        } else {
-          alert("❌ Błąd podczas zapisu.");
-        }
-      });
+    function highlightDefect() {
+      overlay.style.opacity = 0.5;
     }
   </script>
 </body>

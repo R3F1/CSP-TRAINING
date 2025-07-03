@@ -37,7 +37,7 @@
       to { opacity: 0.55; }
     }
 
-    header, .buttons, iframe {
+    header, .buttons, iframe, footer {
       position: relative;
       z-index: 1;
     }
@@ -54,6 +54,12 @@
       text-shadow: 2px 2px 10px rgba(0, 229, 255, 0.8);
       letter-spacing: 2px;
       margin-bottom: 1rem;
+    }
+
+    header .tpv-logo {
+      width: 100px;
+      margin-top: 0.5rem;
+      filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));
     }
 
     @keyframes fadeHeader {
@@ -99,11 +105,26 @@
       display: none;
       background: #000000aa;
     }
+
+    footer {
+      margin-top: 3rem;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #ccc;
+      text-align: center;
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>CSP TRAINING DEFECTS</h1>
+    <img class="tpv-logo" src="06848be0-a6b5-4c2e-8f94-0fd0ae8588ae.png" alt="TPV Logo" />
   </header>
 
   <div class="buttons">
@@ -122,6 +143,11 @@
   </div>
 
   <iframe id="presentation" src=""></iframe>
+
+  <footer>
+    🧑‍💻 Projekt: <strong>Łukasz Gruszczyński</strong><br>
+    <span style="font-size: 0.8rem; color: #888;">powered by TPV Vision Innovator</span>
+  </footer>
 
   <script>
     function showPresentation(type) {

@@ -28,6 +28,8 @@
     .buttons {
       display: flex;
       gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
     }
     button {
       padding: 1rem 2rem;
@@ -61,6 +63,8 @@
   <div class="buttons">
     <button onclick="showPresentation('mura')">MURA DEFECTS</button>
     <button onclick="showPresentation('leakage')">LIGHT LEAKAGE DEFECTS</button>
+    <button onclick="showPresentation('video')">DEFECT RECORDING</button>
+    <button onclick="window.open('https://drive.google.com/drive/folders/1bG7vdwrAjlVsTuxHVXFb4j6OniZDWBKG?usp=sharing', '_blank')">OPEN FULL DRIVE</button>
   </div>
 
   <iframe id="presentation" src=""></iframe>
@@ -69,9 +73,11 @@
     function showPresentation(type) {
       const iframe = document.getElementById('presentation');
       if (type === 'mura') {
-        iframe.src = 'https://view.officeapps.live.com/op/embed.aspx?src=https://yourdomain.com/CSP%20MURA%20DEFECTS.pptx';
+        iframe.src = 'https://drive.google.com/file/d/1CrI5OMRhrFMtCHDpNhcRQv5O3bMZ1iP3/preview';
       } else if (type === 'leakage') {
-        iframe.src = 'https://view.officeapps.live.com/op/embed.aspx?src=https://yourdomain.com/CSP%20LIGHT%20LEAKAGE%20DEFECTS.pptx';
+        iframe.src = 'https://drive.google.com/file/d/1R0VGHnF0FqGpLVOqDkKcZcwrHjD7vWlg/preview';
+      } else if (type === 'video') {
+        iframe.src = 'https://drive.google.com/file/d/1woH1mPuHWiFZascr7T0uhhct_2zgYm1w/preview';
       }
       iframe.style.display = 'block';
     }

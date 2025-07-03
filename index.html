@@ -4,19 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CSP TRAINING DEFECTS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <style>
     @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Orbitron', sans-serif;
       background: url('backgroundphilips.jpg') no-repeat center center fixed;
       background-size: cover;
       color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
@@ -43,8 +44,16 @@
 
     header {
       text-align: center;
-      margin-bottom: 2rem;
+      margin: 2rem 0 3rem;
       animation: fadeHeader 1.5s ease-in-out;
+    }
+
+    header h1 {
+      font-size: 3.5rem;
+      color: #00e5ff;
+      text-shadow: 2px 2px 10px rgba(0, 229, 255, 0.8);
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
     }
 
     @keyframes fadeHeader {
@@ -52,77 +61,62 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    header img {
-      width: 300px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    }
-
     .buttons {
       display: flex;
-      gap: 1.5rem;
+      gap: 1.2rem;
       flex-wrap: wrap;
       justify-content: center;
     }
 
     button {
-      padding: 1rem 1.5rem;
+      padding: 1rem 1.6rem;
       font-size: 1.1rem;
-      border: none;
-      border-radius: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 0.6rem;
-      color: white;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.4s ease;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
     }
 
     button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    }
-
-    .mura-btn {
-      background: #2196F3;
-    }
-    .leakage-btn {
-      background: #9C27B0;
-    }
-    .video-btn {
-      background: #F44336;
-    }
-    .drive-btn {
-      background: #4CAF50;
+      background: rgba(0, 229, 255, 0.3);
+      transform: translateY(-4px);
+      border-color: #00e5ff;
+      box-shadow: 0 0 12px #00e5ff;
     }
 
     iframe {
       margin-top: 2rem;
       width: 90%;
       height: 70vh;
-      border: 2px solid #4CAF50;
+      border: 2px solid #00e5ff;
       border-radius: 10px;
       display: none;
+      background: #000000aa;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>TV Defect Training - Philips</h1>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Philips_logo_new.svg/2560px-Philips_logo_new.svg.png" alt="Philips TV" />
+    <h1>CSP TRAINING DEFECTS</h1>
   </header>
 
   <div class="buttons">
-    <button class="mura-btn" onclick="showPresentation('mura')">
+    <button onclick="showPresentation('mura')">
       <i class="fas fa-file-pdf"></i> MURA DEFECTS
     </button>
-    <button class="leakage-btn" onclick="showPresentation('leakage')">
+    <button onclick="showPresentation('leakage')">
       <i class="fas fa-file-pdf"></i> LIGHT LEAKAGE DEFECTS
     </button>
-    <button class="video-btn" onclick="showPresentation('video')">
+    <button onclick="showPresentation('video')">
       <i class="fas fa-film"></i> DEFECT RECORDING
     </button>
-    <button class="drive-btn" onclick="window.open('https://drive.google.com/drive/folders/1bG7vdwrAjlVsTuxHVXFb4j6OniZDWBKG?usp=sharing', '_blank')">
+    <button onclick="window.open('https://drive.google.com/drive/folders/1bG7vdwrAjlVsTuxHVXFb4j6OniZDWBKG?usp=sharing', '_blank')">
       <i class="fab fa-google-drive"></i> OPEN FULL DRIVE
     </button>
   </div>

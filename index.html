@@ -3,97 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LCD Defect Visualizer</title>
+  <title>TV Defect Training</title>
   <style>
     body {
-      background-color: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-    .tv {
-      position: relative;
-      margin: 0 auto;
-      width: 800px;
-      height: 450px;
-      background: #222;
-      border: 20px solid #000;
-      border-radius: 12px;
-      box-shadow: 0 0 40px rgba(0,0,0,0.7);
-    }
-    .screen-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      transition: opacity 0.3s ease;
-    }
-    .controls {
-      margin-top: 20px;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, #1a1a1a, #333);
+      color: white;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
-      gap: 10px;
+      height: 100vh;
     }
-    .controls button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      background: #444;
-      color: #fff;
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    header img {
+      width: 300px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    .buttons {
+      display: flex;
+      gap: 2rem;
+    }
+    button {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
       border: none;
-      border-radius: 6px;
-      transition: background 0.2s;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #4CAF50;
+      color: white;
+      transition: background 0.3s ease;
     }
-    .controls button:hover {
-      background: #666;
+    button:hover {
+      background: #45a049;
+    }
+    iframe {
+      margin-top: 2rem;
+      width: 90%;
+      height: 70vh;
+      border: 2px solid #4CAF50;
+      border-radius: 10px;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <h1>LCD Defect Visualizer</h1>
-  <div class="tv" onclick="highlightDefect()">
-    <div id="overlay" class="screen-overlay"></div>
+  <header>
+    <h1>TV Defect Training - Philips</h1>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Philips_logo_new.svg/2560px-Philips_logo_new.svg.png" alt="Philips TV" />
+  </header>
+
+  <div class="buttons">
+    <button onclick="showPresentation('mura')">MURA DEFECTS</button>
+    <button onclick="showPresentation('leakage')">LIGHT LEAKAGE DEFECTS</button>
   </div>
-  <div class="controls">
-    <button onclick="showDefect('side')">SIDE MURA</button>
-    <button onclick="showDefect('corner')">CORNER MURA</button>
-    <button onclick="showDefect('ledbar')">LED BAR MURA</button>
-    <button onclick="showDefect('ledlens')">LED / LENS MURA</button>
-    <button onclick="showDefect('wave')">WAVE MURA</button>
-    <button onclick="showDefect('diffuser')">DIFFUSER PLATE MURA</button>
-    <button onclick="showDefect('none')">CLEAR</button>
-  </div>
+
+  <iframe id="presentation" src=""></iframe>
 
   <script>
-    const overlay = document.getElementById('overlay');
-
-    function showDefect(type) {
-      const imageMap = {
-        side: 'SIDE_MURA.png',
-        corner: 'CORNER_MURA.png',
-        ledbar: 'LED_BAR_MURA.png',
-        ledlens: 'LED_LENS_MURA.png',
-        wave: 'WAVE_MURA.png',
-        diffuser: 'DIFFUSER_PLATE_MURA.png'
-      };
-
-      if (type === 'none') {
-        overlay.style.opacity = 0;
-        overlay.style.backgroundImage = '';
-      } else {
-        overlay.style.backgroundImage = `url(${imageMap[type]})`;
-        overlay.style.opacity = 1;
+    function showPresentation(type) {
+      const iframe = document.getElementById('presentation');
+      if (type === 'mura') {
+        iframe.src = 'https://view.officeapps.live.com/op/embed.aspx?src=https://yourdomain.com/CSP%20MURA%20DEFECTS.pptx';
+      } else if (type === 'leakage') {
+        iframe.src = 'https://view.officeapps.live.com/op/embed.aspx?src=https://yourdomain.com/CSP%20LIGHT%20LEAKAGE%20DEFECTS.pptx';
       }
-    }
-
-    function highlightDefect() {
-      overlay.style.opacity = 0.5;
+      iframe.style.display = 'block';
     }
   </script>
 </body>

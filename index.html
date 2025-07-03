@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TV Defect Training</title>
   <style>
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -14,7 +16,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
     }
     header {
       text-align: center;
@@ -27,22 +29,37 @@
     }
     .buttons {
       display: flex;
-      gap: 2rem;
+      gap: 1.5rem;
       flex-wrap: wrap;
       justify-content: center;
     }
     button {
-      padding: 1rem 2rem;
-      font-size: 1.2rem;
+      padding: 1rem 1.5rem;
+      font-size: 1.1rem;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      background: #4CAF50;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
       color: white;
-      transition: background 0.3s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     button:hover {
-      background: #45a049;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .mura-btn {
+      background: #2196F3;
+    }
+    .leakage-btn {
+      background: #9C27B0;
+    }
+    .video-btn {
+      background: #F44336;
+    }
+    .drive-btn {
+      background: #4CAF50;
     }
     iframe {
       margin-top: 2rem;
@@ -61,10 +78,18 @@
   </header>
 
   <div class="buttons">
-    <button onclick="showPresentation('mura')">MURA DEFECTS</button>
-    <button onclick="showPresentation('leakage')">LIGHT LEAKAGE DEFECTS</button>
-    <button onclick="showPresentation('video')">DEFECT RECORDING</button>
-    <button onclick="window.open('https://drive.google.com/drive/folders/1bG7vdwrAjlVsTuxHVXFb4j6OniZDWBKG?usp=sharing', '_blank')">OPEN FULL DRIVE</button>
+    <button class="mura-btn" onclick="showPresentation('mura')">
+      <i class="fas fa-file-pdf"></i> MURA DEFECTS
+    </button>
+    <button class="leakage-btn" onclick="showPresentation('leakage')">
+      <i class="fas fa-file-pdf"></i> LIGHT LEAKAGE DEFECTS
+    </button>
+    <button class="video-btn" onclick="showPresentation('video')">
+      <i class="fas fa-film"></i> DEFECT RECORDING
+    </button>
+    <button class="drive-btn" onclick="window.open('https://drive.google.com/drive/folders/1bG7vdwrAjlVsTuxHVXFb4j6OniZDWBKG?usp=sharing', '_blank')">
+      <i class="fab fa-google-drive"></i> OPEN FULL DRIVE
+    </button>
   </div>
 
   <iframe id="presentation" src=""></iframe>
